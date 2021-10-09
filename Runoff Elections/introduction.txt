@@ -1,0 +1,18 @@
+  
+                                                                      RUNOFF ELECTION
+ _________________________________________________________________________________________________________________________________________________________________________________
+ 
+ A runoff election is a ranked-choice voting system. In a ranked-choice system, voters can vote for more than one candidate. Instead of just voting for their top choice, 
+ they can rank the candidates in order of preference. 
+ 
+ In an instant runoff election, voters rank all candidates. If any candidate has a majority (more than 50%) of the first preference votes, that candidate is declared the 
+ winner of the election.
+ 
+If no candidate has more than 50% of the vote, then an “instant runoff” occurrs. The candidate who received the fewest number of votes is eliminated from the election, and 
+anyone who originally chose that candidate as their first preference now has their second preference considered. The process repeats a candidate with majority is found,which is
+then declared the winner
+ 
+Corner cases:
+One possibility is that there’s a tie for who should get eliminated. We handle that scenario by saying all candidates who are tied for last place will be eliminated given
+that not every candidate has the exact same number of votes- because that would mean eliminating everyone).In such a case we declare a tie between all remaining candidates.
+                                                                      
