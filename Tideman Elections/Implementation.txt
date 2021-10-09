@@ -1,5 +1,6 @@
-TIDEMAN ELECTION
+                                                                                TIDEMAN ELECTION
 ________________________________________________________________________________________________________________________________________________________________________________
+
 This as a ranked-choice voting system. In a ranked-choice system, voters can vote for more than one candidate. 
 Instead of just voting for their top choice, they can rank the candidates in order of preference. 
 
@@ -13,8 +14,9 @@ In case of a tie a cycle would be made (no source). (Eg: A wins against B, B win
 
 To avoid this, The tideman algorithm locks the strongest edges first, since those are arguably the most significant. So long as the edge can be locked into the graph
 without creating a cycle (An instance of A -> B -> C), the edge is added; otherwise, the edge is ignored.
-
+________________________________________________________________________________________________________________________________________________________________________________
 Algorithm:
+________________________________________________________________________________________________________________________________________________________________________________
 
 1. Tally: Once all of the voters have indicated all of their preferences, determine, for each pair of candidates, who the preferred candidate is and by what margin they 
 are preferred.
