@@ -1,3 +1,8 @@
+/* Tideman is ranked-choice voting system. 
+In a ranked-choice system, voters can vote for more than one candidate. 
+Instead of just voting for their top choice, they can rank the candidates in order of preference.
+This system is guaranteed to produce the Condorcet winner of the election if one exists.*/ 
+
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
