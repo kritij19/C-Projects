@@ -1,6 +1,7 @@
 # include <math.h>
 
-// Convert image to grayscale
+// GRAYSCALE: 
+
 // Calculate the avg of r,g,b values and put all values equal to avg
 // **x/y returns an int. To get a float return value (float)x/y or x.0/y or x/y.0
 // round() always rounds up
@@ -23,7 +24,8 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width])
     }
     return;
 }
-// Convert image to sepia
+// SEPIA : 
+
 // Given formulas for conversions
 void sepia(int height, int width, RGBTRIPLE image[height][width])
 {
@@ -58,7 +60,8 @@ void sepia(int height, int width, RGBTRIPLE image[height][width])
     return;
 }
 
-// Reflect image horizontally
+// REFLECT IMAGE HORIZONTALLY:
+
 // Replacing value of pixel in the front with the corresponding pixel at the end using a temporary variable
 // If there is a middle row it needs to stay unchanged
 // Middle row will exist in case of odd number of rows
@@ -83,7 +86,8 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
     return;
 }
 
-// Blur image
+// BLUR IMAGE:
+
 // We take avg of r,g,b values in the respective array to be considered
 // For corners: 2x2 array
 // For edges: 2x3 /3x2 array
@@ -254,6 +258,128 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
                 image[i][j].rgbtRed = (int)(round(((float)sum_red) / 9));
                 image[i][j].rgbtBlue = (int)(round(((float)sum_blue) / 9));
                 image[i][j].rgbtGreen = (int)(round(((float)sum_green) / 9));
+            }
+        }
+    }
+    return;
+}
+
+// Detect edges
+void edges(int height, int width, RGBTRIPLE image[height][width])
+{
+    //Making a copy of the image
+    RGBTRIPLE temp[height][width];
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            temp[i][j] = image[i][j];
+        }
+    }
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            //If the pixel lies one of the edges
+            //We will consider all the pixels in the the 3 x 3 grid for corners/edges which do not lie in the picture to be black
+            if (i == 0 || i == height - 1 || j == 0 || j == width - 1)
+            {
+                //The array keeps track of the values r,g,b values of the 3 x 3 array
+                int arr_red[9];
+                int arr_blue[9];
+                int arr_green[9];
+                int count = 0;
+                for (int x = i - 1; x < i + 2; x++)
+                {
+                    for (int y = j - 1; y < j + 2; y++)
+                    {
+                        if (x < 0 || y < 0 || y >= width || x >= height)
+                        {
+                            arr_red[count] = 0;
+                            arr_blue[count] = 0;
+                            arr_green[count] = 0;
+                            count++;
+                        }
+                        else
+                        {
+                            arr_red[count] = temp[x][y].rgbtRed;
+                            arr_blue[count] = temp[x][y].rgbtBlue;
+                            arr_green[count] = temp[x][y].rgbtGreen;
+                            count++;
+                        }
+                    }
+                }
+                //gx and gy are calculted for r,g,b.
+                // For each of the pixel the calculation is done 6 times. 3 times for gx and 3 times for gy.
+                int red_gx = -1 * arr_red[0] + arr_red[2] + -2 * arr_red[3] + 2 * arr_red[5] + -1 * arr_red[6] + arr_red[8];
+                int blue_gx = -1 * arr_blue[0] + arr_blue[2] + -2 * arr_blue[3] + 2 * arr_blue[5] + -1 * arr_blue[6] + arr_blue[8];
+                int green_gx = -1 * arr_green[0] + arr_green[2] + -2 * arr_green[3] + 2 * arr_green[5] + -1 * arr_green[6] + arr_green[8];
+                int red_gy = -1 * arr_red[0] + -2 * arr_red[1] + -1 * arr_red[2] + arr_red[6] + 2 * arr_red[7] + arr_red[8];
+                int blue_gy = -1 * arr_blue[0] + -2 * arr_blue[1] + -1 * arr_blue[2] + arr_blue[6] + 2 * arr_blue[7] + arr_blue[8];
+                int green_gy = -1 * arr_green[0] + -2 * arr_green[1] + -1 * arr_green[2] + arr_green[6] + 2 * arr_green[7] + arr_green[8];
+                //Final value of r,g,b for each of the pixels is given by sq root of gx^2 +gy^2.
+                int red = (int)round(sqrt(pow(red_gx, 2) + pow(red_gy, 2)));
+                int blue = (int)round(sqrt(pow(blue_gx, 2) + pow(blue_gy, 2)));
+                int green = (int)round(sqrt(pow(green_gx, 2) + pow(green_gy, 2)));
+                //If the value is greater than 255 we cap it
+                if (red > 255)
+                {
+                    red = 255;
+                }
+                if (blue > 255)
+                {
+                    blue = 255;
+                }
+                if (green > 255)
+                {
+                    green = 255;
+                }
+                image[i][j].rgbtRed = red;
+                image[i][j].rgbtBlue = blue;
+                image[i][j].rgbtGreen = green;
+
+            }
+            //For all the points that do not lie on the edge or on the corner
+            else
+            {
+                int arr_red[9];
+                int arr_blue[9];
+                int arr_green[9];
+                int count = 0;
+                for (int x = i - 1; x < i + 2; x++)
+                {
+                    for (int y = j - 1; y < j + 2; y++)
+                    {
+                        arr_red[count] = temp[x][y].rgbtRed;
+                        arr_blue[count] = temp[x][y].rgbtBlue;
+                        arr_green[count] = temp[x][y].rgbtGreen;
+                        count++;
+                    }
+                }
+                int red_gx = -1 * arr_red[0] + arr_red[2] + -2 * arr_red[3] + 2 * arr_red[5] + -1 * arr_red[6] + arr_red[8];
+                int blue_gx = -1 * arr_blue[0] + arr_blue[2] + -2 * arr_blue[3] + 2 * arr_blue[5] + -1 * arr_blue[6] + arr_blue[8];
+                int green_gx = -1 * arr_green[0] + arr_green[2] + -2 * arr_green[3] + 2 * arr_green[5] + -1 * arr_green[6] + arr_green[8];
+                int red_gy = -1 * arr_red[0] + -2 * arr_red[1] + -1 * arr_red[2] + arr_red[6] + 2 * arr_red[7] + arr_red[8];
+                int blue_gy = -1 * arr_blue[0] + -2 * arr_blue[1] + -1 * arr_blue[2] + arr_blue[6] + 2 * arr_blue[7] + arr_blue[8];
+                int green_gy = -1 * arr_green[0] + -2 * arr_green[1] + -1 * arr_green[2] + arr_green[6] + 2 * arr_green[7] + arr_green[8];
+                int red = (int)round(sqrt(pow(red_gx, 2) + pow(red_gy, 2)));
+                int blue = (int)round(sqrt(pow(blue_gx, 2) + pow(blue_gy, 2)));
+                int green = (int)round(sqrt(pow(green_gx, 2) + pow(green_gy, 2)));
+                if (red > 255)
+                {
+                    red = 255;
+                }
+                if (blue > 255)
+                {
+                    blue = 255;
+                }
+                if (green > 255)
+                {
+                    green = 255;
+                }
+                image[i][j].rgbtRed = red;
+                image[i][j].rgbtBlue = blue;
+                image[i][j].rgbtGreen = green;
             }
         }
     }
