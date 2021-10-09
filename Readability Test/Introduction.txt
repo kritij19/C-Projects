@@ -1,0 +1,13 @@
+                                                                             
+READABILITY TEST
+________________________________________________________________________________________________________________________________________________________________________________
+
+A project which aims to determine what (U.S.) grade level is needed to understand a given text. 
+
+The program uses the the Coleman-Liau index for the readability test.
+The formula is:  
+
+     index = 0.0588 * L - 0.296 * S - 15.8 
+    
+ Here, L: is the average number of letters per 100 words in the text
+       S: is the average number of sentences per 100 words in the text
