@@ -1,10 +1,7 @@
 # include <math.h>
 
 // GRAYSCALE: 
-// Calculate the avg of r,g,b values and put all values equal to avg
-// **x/y returns an int. To get a float return value (float)x/y or x.0/y or x/y.0
-// round() always rounds up
-// nearbyint() rounds up in x.5 x is odd and rounds down when x is even. 
+// Algorithm: New r,g,b values =  the avg of original r,g,b values
 void grayscale(int height, int width, RGBTRIPLE image[height][width])
 {
     for (int i = 0; i < height; i++)
@@ -14,8 +11,8 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width])
             int red = image[i][j].rgbtRed;
             int blue = image[i][j].rgbtBlue;
             int green = image[i][j].rgbtGreen;
-            float f_avg = ((float)red + blue + green) / 3;
-            int avg = (int)nearbyint(f_avg);
+            float f_avg = ((float)red + blue + green) / 3; // x/y returns an int. To get a float return value (float)x/y or x.0/y or x/y.0
+            int avg = (int)nearbyint(f_avg); // nearbyint() rounds up x.5 when x is odd and rounds down when x is even. 
             image[i][j].rgbtRed = avg;
             image[i][j].rgbtBlue = avg;
             image[i][j].rgbtGreen = avg;
@@ -60,12 +57,11 @@ void sepia(int height, int width, RGBTRIPLE image[height][width])
 }
 
 // REFLECT IMAGE HORIZONTALLY:
-// Replacing value of pixel in the front with the corresponding pixel at the end using a temporary variable
-// If there is a middle row it needs to stay unchanged
-// Middle row will exist in case of odd number of rows
-// width/2 returns just the integer part of the quotient
+// Replace pixels on left with ones on right
 void reflect(int height, int width, RGBTRIPLE image[height][width])
 {
+    // Replacing value of pixel in the front with the corresponding pixel at the end using a temporary variable
+    // If there is a middle row (in case of odd number of rows) needs to stay unchanged
     for (int i = 0; i < height; i++)
     {
         for (int j = 1; j <= width / 2; j++)
@@ -85,14 +81,11 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 }
 
 // BLUR IMAGE:
-// We take avg of r,g,b values in the respective array to be considered
-// For corners: 2x2 array
-// For edges: 2x3 /3x2 array
-// For any other pixel: 3x3 array
+// Algorithm: We take avg of r,g,b values in the respective array to be considered
+
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
-    //Copying the picture into another 2-D array temp
-    // The data type is of RGVTRIPLE
+    // Copying the picture into another 2-D array temp
     RGBTRIPLE temp[height][width];
     for (int i = 0; i < height; i++)
     {
@@ -101,6 +94,9 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
             temp[i][j] = image[i][j];
         }
     }    
+    // For corners: 2x2 array
+    // For edges: 2x3 /3x2 array
+    // For any other pixel: 3x3 array
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
@@ -261,10 +257,11 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
     return;
 }
 
-// Detect edges
+// EDGE DETECTION
+// Algorithm: Applying the Sobel operator to the image
 void edges(int height, int width, RGBTRIPLE image[height][width])
 {
-    //Making a copy of the image
+    // Making a copy of the image
     RGBTRIPLE temp[height][width];
     for (int i = 0; i < height; i++)
     {
@@ -306,7 +303,7 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
                         }
                     }
                 }
-                // gx and gy are calculted for r,g,b.
+                // gx and gy are calculated for r,g,b.
                 // For each of the pixel the calculation is done 6 times. 3 times for gx and 3 times for gy.
                 int red_gx = -1 * arr_red[0] + arr_red[2] + -2 * arr_red[3] + 2 * arr_red[5] + -1 * arr_red[6] + arr_red[8];
                 int blue_gx = -1 * arr_blue[0] + arr_blue[2] + -2 * arr_blue[3] + 2 * arr_blue[5] + -1 * arr_blue[6] + arr_blue[8];
