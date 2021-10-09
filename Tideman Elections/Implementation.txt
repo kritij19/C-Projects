@@ -1,0 +1,24 @@
+**Tideman Election**
+This as a ranked-choice voting system. In a ranked-choice system, voters can vote for more than one candidate. 
+Instead of just voting for their top choice, they can rank the candidates in order of preference. 
+
+The Tideman method works by constructing a “graph” of candidates, where an arrow (i.e. edge) from candidate A to candidate B indicates that candidate A wins against 
+candidate B in a head-to-head matchup. The method says the winner of the election should be the “source” of the graph (i.e. the candidate that has no arrow pointing at them). 
+
+For every pair, a score is maintained on the basis of how many people prefer any candidate A over a candidate B. (So in case of a head to head we know which would win)
+The condorcent winner is the candidate which wins against every candidate.
+
+In case of a tie a cycle would be made (no source). (Eg: A wins against B, B wins against C and C wins against A.)
+
+To avoid this, The tideman algorithm locks the strongest edges first, since those are arguably the most significant. So long as the edge can be locked into the graph
+without creating a cycle (An instance of A -> B -> C), the edge is added; otherwise, the edge is ignored.
+
+Algorithm:
+
+1. Tally: Once all of the voters have indicated all of their preferences, determine, for each pair of candidates, who the preferred candidate is and by what margin they 
+are preferred.
+2. Sort: Sort the pairs of candidates in decreasing order of strength of victory, where strength of victory is defined to be the number of voters who prefer the preferred 
+candidate.
+3. Lock: Starting with the strongest pair, go through the pairs of candidates in order and “lock in” each pair to the candidate graph, so long as locking in that pair does not 
+create a cycle in the graph.
+4. Determining the winner: Once the graph is complete, the source of the graph (the one with no edges pointing towards it) is the winner
