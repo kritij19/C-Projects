@@ -14,6 +14,9 @@ Executes the following filters on .bmp images:
                  
 3. **Tideman Election** -   
 Implements the tideman algorithm for conducting an election.  
-  
-4. **Readability Test** -   
+
+4. **Runoff Election** -   
+Implements the instant runoff system to conduct an election.  
+
+5. **Readability Test** -   
 Determines the (U.S.) grade level required to understand a given text. Uses Coleman-Liau index.           
