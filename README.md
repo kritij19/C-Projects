@@ -5,7 +5,7 @@ This repository contains the following projects:
 Inputs a .wav file and returns a .wav file with modified volume on the basis of a user inputted factor.
     
 2. **Filters** -  
-This contains functions to implement the following filters:  
+This contains functions to implement the following filters on .bmp images:  
               *i) Grayscale*  
               *ii) Sepia*  
               *iii) Reflection*    
